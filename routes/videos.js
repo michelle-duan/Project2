@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoClient = require("mongodb").MongoClient;
 const assert = require("assert");
 const bodyParser = require("body-parser");
-
+const objectId = require("mongodb").ObjectID;
 // Connection URL
 let url = process.env.MONGODB_URI || "mongodb://localhost:27017";
 let db;
@@ -19,6 +19,27 @@ mongoClient.connect(url, { useUnifiedTopology: true }, function (
 });
 
 router.get("/getComments", function (request, response) {
+  const tableName = "comments";
+  const videoId = request.query.videoId;
+  const cursor = db
+    .collection(tableName)
+    .find({ videoId: videoId }, { limit: 10 });
+  cursor
+    .sort({ time: -1 })
+    .map((e) => {
+      return {
+        id: e._id,
+        username: e.username,
+        comment: e.comment,
+        time: e.time,
+      };
+    })
+    .toArray(function (error, result) {
+      response.send(result);
+    });
+});
+
+router.get("/getLikes", function (request, response) {
   const tableName = "comments";
   const videoId = request.query.videoId;
   const cursor = db
@@ -75,6 +96,36 @@ router.post("/addComments", function (request, response) {
       } else {
         response.status(200).end();
       }
+    }
+  );
+});
+
+router.put("/updateVotes", (request, response) => {
+  console.log("updateVotes in back end");
+  const tableName = "videos";
+  const data = request.body.data;
+  db.collection(tableName).updateOne(
+    { _id: objectId(data.videoId) },
+    { $set: { votes: data.votes } },
+    function (err, result) {
+      if (err !== null) throw err;
+      response.send(result);
+      //client.close();
+    }
+  );
+});
+
+router.put("/updateDislikes", (request, response) => {
+  console.log("updateVotes in back end");
+  const tableName = "videos";
+  const data = request.body.data;
+  db.collection(tableName).updateOne(
+    { _id: objectId(data.videoId) },
+    { $set: { dislikes: data.dislikes } },
+    function (err, result) {
+      if (err !== null) throw err;
+      response.send(result);
+      //client.close();
     }
   );
 });
