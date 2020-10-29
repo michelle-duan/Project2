@@ -18,47 +18,6 @@ mongoClient.connect(url, { useUnifiedTopology: true }, function (
   db = client.db("posts");
 });
 
-router.get("/list", function (request, response) {
-  const tableName = "videos";
-  const cursor = db.collection(tableName).find({}, { limit: 10 });
-  cursor
-    .map((e) => {
-      return { id: e._id, name: e.name, thumbnail: e.thumbnail };
-    })
-    .toArray(function (error, result) {
-      client.close();
-      response.send(result);
-    });
-});
-
-router.get("/getContent", function (request, response) {
-  const tableName = "videos";
-  const id = request.query.id;
-  const mongoId = new ObjectID(id);
-  db.collection(tableName).findOne({ _id: mongoId }, function (error, result) {
-    if (error !== undefined && error !== null) {
-      // occurs error
-      response.status(500);
-      client.close();
-      response.send(
-        "Since server encounters error, registration failed. details: " +
-          error.message
-      );
-    } else if (result === null) {
-      response.status(400);
-      client.close();
-      response.send("Cannot find video with id " + id + ". ");
-    } else {
-      client.close();
-      response.send({
-        id: result._id,
-        name: result.name,
-        url: result.url,
-      });
-    }
-  });
-});
-
 router.get("/getComments", function (request, response) {
   const tableName = "comments";
   const videoId = request.query.videoId;
