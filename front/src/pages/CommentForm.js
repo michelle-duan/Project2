@@ -10,7 +10,7 @@ class CommentForm extends React.Component {
       .post("/videos/addComments", {
         data: {
           videoId: this.props.videoId,
-          username: this.props.username,
+          userToken: this.props.userToken,
           comment: this.props.comment,
         },
       })
@@ -64,7 +64,7 @@ class CommentForm extends React.Component {
 
 CommentForm.propTypes = {
   videoeId: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
+  userToken: PropTypes.string.isRequired,
   enableComment: PropTypes.bool.isRequired,
   comment: PropTypes.string.isRequired,
   commentOnChange: PropTypes.func.isRequired,
