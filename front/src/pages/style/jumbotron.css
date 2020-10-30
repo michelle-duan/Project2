@@ -1,0 +1,19 @@
+.jumbotron {
+  background: url(https://www.purelypetsinsurance.co.uk/media/1136/kitten-touching-dog.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  height: 500px;
+}
+
+.jumbotron h1 {
+  display: block;
+  font-weight: bold;
+  color: red;
+  font-size: 90px;
+}
+.jumbotron p {
+  display: block;
+  color: red;
+  font-size: 40px;
+}

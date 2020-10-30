@@ -10,6 +10,46 @@ let db;
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
+router.get("/list", function (request, response) {
+  const tableName = "videos";
+  const cursor = db.collection(tableName).find({}, { limit: 10 });
+  cursor
+    .map((e) => {
+      return { id: e._id, name: e.name, url: e.url, thumbnail: e.thumbnail };
+    })
+    .toArray(function (error, result) {
+      response.send(result);
+    });
+});
+
+router.get("/getContent", function (request, response) {
+  const tableName = "videos";
+  const id = request.query.id;
+  const mongoId = objectId(id);
+  console.log(id);
+  db.collection(tableName).findOne({ _id: mongoId }, function (error, result) {
+    if (error !== undefined && error !== null) {
+      // occurs error
+      response.status(500);
+      client.close();
+      response.send(
+        "Since server encounters error, registration failed. details: " +
+          error.message
+      );
+    } else if (result === null) {
+      response.status(400);
+      console.log(id);
+      response.send("Cannot find video with id " + id + ". ");
+    } else {
+      response.send({
+        id: result._id,
+        name: result.name,
+        url: result.url,
+      });
+    }
+  });
+});
+
 mongoClient.connect(url, { useUnifiedTopology: true }, function (
   error,
   client
@@ -29,7 +69,7 @@ router.get("/getComments", function (request, response) {
     .map((e) => {
       return {
         id: e._id,
-        username: e.username,
+        userToken: e.userToken,
         comment: e.comment,
         time: e.time,
       };
@@ -50,7 +90,7 @@ router.get("/getLikes", function (request, response) {
     .map((e) => {
       return {
         id: e._id,
-        username: e.username,
+        userToken: e.userToken,
         comment: e.comment,
         time: e.time,
       };
@@ -79,7 +119,7 @@ router.post("/addComments", function (request, response) {
   db.collection(tableName).insertOne(
     {
       videoId: data.videoId,
-      username: data.username,
+      userToken: data.userToken,
       comment: data.comment,
       time: new Date(),
     },
@@ -134,7 +174,7 @@ router.put("/updateDislikes", (request, response) => {
 //   const data = request.body.data;
 //   db.collection("comments").insertOne({
 //     videoId: data.videoId,
-//     username: data.username,
+//     userToken: data.userToken,
 //     comment: data.comment,
 //     time: new Date(),
 //   }),
@@ -160,7 +200,7 @@ router.put("/updateDislikes", (request, response) => {
 //       .map((e) => {
 //         return {
 //           id: e._id,
-//           username: e.username,
+//           userToken: e.userToken,
 //           comment: e.comment,
 //         };
 //       })

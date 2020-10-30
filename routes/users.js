@@ -36,7 +36,7 @@ router.post("/register", urlencodedParser, function (request, response) {
   });
 });
 
-router.post("/login", urlencodedParser, function (request, response) {
+router.post("/authenticate", urlencodedParser, function (request, response) {
   const data = request.body.data;
   db.collection("users").findOne({ username: data.username }, function (
     error,
@@ -44,8 +44,10 @@ router.post("/login", urlencodedParser, function (request, response) {
   ) {
     if (result === null || result.password != data.password) {
       response.status(401).send("Username or Password not correct.");
+      response.send({ match: false });
     } else {
-      response.send(result);
+      response.status(200);
+      response.send({ match: true });
     }
   });
 });
