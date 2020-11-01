@@ -162,15 +162,13 @@ function connect(callback) {
 function updateVotes(c, callback) {
   console.log(c);
 
-  connect(function (dogposts, client) {
+  connect(function (dogposts) {
     dogposts.updateOne(
       { _id: objectId(c.id) },
       { $set: { votes: c.votes } },
       function (err, result) {
         if (err !== null) throw err;
         callback(result);
-
-        client.close();
       }
     );
   });
