@@ -93,8 +93,9 @@ class SinglePages extends React.Component {
     }
     return (
       <div>
-        <Jumbo />
         <NavigationBar />
+        <Jumbo />
+
         <Container>{displayContent}</Container>
       </div>
     );

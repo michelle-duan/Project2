@@ -10,12 +10,12 @@ class Jumbo extends Component {
         class="jumbotron d-flex align-items-center"
         style={{
           "text-align": "center",
-          fontFamily: "Crete Round",
+          fontFamily: "lato",
           opacity: "0.8",
         }}
       >
-        <div class="container">
-          <h1>Petube</h1>
+        <div class="content">
+          <h1>Pettube</h1>
           <p className="lead">The cuttest pettube for pets.</p>
         </div>
       </div>

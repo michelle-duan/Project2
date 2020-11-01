@@ -1,7 +1,12 @@
 import React from "react";
 import { Navbar, Nav, ButtonToolbar, Button } from "react-bootstrap";
 import Cookies from "universal-cookie";
-import "../css/navigation-bar.css";
+import "./style/navigation-bar.css";
+
+import { NavLink } from "react-router-dom";
+import { Row, Col, Menu } from "antd";
+import { HomeOutlined, ReadOutlined } from "@ant-design/icons";
+//import "./style/antStyle.less";
 
 class NavigationBar extends React.Component {
   constructor(props) {
@@ -57,24 +62,65 @@ class NavigationBar extends React.Component {
           <Button className={"mx-1"} variant={"primary"} href={"/register"}>
             Register
           </Button>
+          <img id={"rightCornerIcon"} src="/images/avatar.svg" alt="" />
           <Button className={"mx-1"} variant={"success"} href={"/login"}>
             Sign in
           </Button>
         </ButtonToolbar>
       );
     }
+
     return (
-      <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="/">Cute Animal Videos</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
-            <Nav.Link href="/">Homepage</Nav.Link>
-          </Nav>
+      <Row>
+        <Col sm={14} md={10} lg={8} xl={6}>
+          <div className="brand">
+            <img
+              src="https://res.cloudinary.com/masterchef/image/upload/v1599206804/icon_jzvahe.png"
+              alt="icon"
+              style={{ width: "4rem", marginRight: "20px" }}
+            />
+            Pettube
+          </div>
+        </Col>
+
+        {/* Menu */}
+        <Col sm={2} md={3} lg={5} xl={3}>
+          {/* <Menu theme="dark" mode="horizontal"> */}
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            style={{ background: "#fcaf58" }}
+          >
+            <Menu.Item key="1" className="select">
+              <HomeOutlined />
+              <span>
+                <NavLink to="/">Home</NavLink>
+              </span>
+            </Menu.Item>
+
+            {/* <Menu.Item key="3">
+            <AboutModal />
+          </Menu.Item> */}
+          </Menu>
+        </Col>
+
+        <Col className="sign-in" sm={2} md={3} lg={10} xl={14}>
           {rightCornerContent}
-        </Navbar.Collapse>
-      </Navbar>
+        </Col>
+      </Row>
     );
+    // return (
+    //   <Navbar bg="light" expand="lg">
+    //     <Navbar.Brand href="/">Pet Website</Navbar.Brand>
+    //     <Navbar.Toggle aria-controls="basic-navbar-nav" />
+    //     <Navbar.Collapse id="basic-navbar-nav">
+    //       <Nav className="mr-auto">
+    //         <Nav.Link href="/">Homepage</Nav.Link>
+    //       </Nav>
+    //       {rightCornerContent}
+    //     </Navbar.Collapse>
+    //   </Navbar>
+    // );
   }
 }
 

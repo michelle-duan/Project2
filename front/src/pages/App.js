@@ -8,6 +8,8 @@ import Videos from "./Videos.js";
 
 import Jumbo from "./Jumbotron.js";
 
+import NavigationBar from "./NavigationBar.js";
+
 // function App() {
 //   const [videos, setVideos] = useState([]);
 
@@ -86,6 +88,7 @@ class App extends React.Component {
     });
     return (
       <div>
+        <NavigationBar />
         <Jumbo />
 
         <Row>
