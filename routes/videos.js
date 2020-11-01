@@ -180,9 +180,7 @@ function updateVotes(c, callback) {
           var MongoClient = require("mongodb").MongoClient;
 
           var dbURI =
-            process.env.MONGODB_URI ||
-            require("../config/keys.js") ||
-            "mongodb://localhost:27017";
+            process.env.MONGODB_URI || require("../db/mongoDetails.js");
 
           var client = new MongoClient(dbURI);
 

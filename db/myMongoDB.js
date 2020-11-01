@@ -3,7 +3,7 @@ const { MongoClient } = require("mongodb");
 
 function MyDB() {
   const myDB = {};
-  const uri = process.env.MONGO_URL || require("./mongoDetails.js");
+  const uri = process.env.MONGODB_URI || require("./mongoDetails.js");
 
   myDB.getPosts = async () => {
     const client = new MongoClient(uri, { useUnifiedTopology: true });
