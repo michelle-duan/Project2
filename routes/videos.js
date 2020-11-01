@@ -4,10 +4,10 @@ const mongoClient = require("mongodb").MongoClient;
 const assert = require("assert");
 const bodyParser = require("body-parser");
 const objectId = require("mongodb").ObjectID;
+require("dotenv").config();
 // Connection URL
-let url =
-  process.env.MONGODB_URI ||
-  "mongodb://brad123:brad123@tmcluster-shard-00-00.49zsn.mongodb.net:27017,tmcluster-shard-00-01.49zsn.mongodb.net:27017,tmcluster-shard-00-02.49zsn.mongodb.net:27017/test?ssl=true&replicaSet=atlas-a1od78-shard-0&authSource=admin&retryWrites=true&w=majority";
+let url = process.env.MONGODB_URI || require("../db/mongoDetails.js");
+
 let db;
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
@@ -47,6 +47,7 @@ router.get("/getContent", function (request, response) {
         id: result._id,
         name: result.name,
         url: result.url,
+        votes: result.votes,
       });
     }
   });
@@ -81,26 +82,26 @@ router.get("/getComments", function (request, response) {
     });
 });
 
-router.get("/getLikes", function (request, response) {
-  const tableName = "comments";
-  const videoId = request.query.videoId;
-  const cursor = db
-    .collection(tableName)
-    .find({ videoId: videoId }, { limit: 10 });
-  cursor
-    .sort({ time: -1 })
-    .map((e) => {
-      return {
-        id: e._id,
-        userToken: e.userToken,
-        comment: e.comment,
-        time: e.time,
-      };
-    })
-    .toArray(function (error, result) {
-      response.send(result);
-    });
-});
+// router.get("/getLikes", function (request, response) {
+//   const tableName = "comments";
+//   const videoId = request.query.videoId;
+//   const cursor = db
+//     .collection(tableName)
+//     .find({ videoId: videoId }, { limit: 10 });
+//   cursor
+//     .sort({ time: -1 })
+//     .map((e) => {
+//       return {
+//         id: e._id,
+//         userToken: e.userToken,
+//         comment: e.comment,
+//         time: e.time,
+//       };
+//     })
+//     .toArray(function (error, result) {
+//       response.send(result);
+//     });
+// });
 
 // router.get("/getComments", urlencodedParser, function (request, response) {
 //   const data = request.query;
@@ -142,20 +143,94 @@ router.post("/addComments", function (request, response) {
   );
 });
 
-router.put("/updateVotes", (request, response) => {
-  console.log("updateVotes in back end");
-  const tableName = "videos";
-  const data = request.body.data;
-  db.collection(tableName).updateOne(
-    { _id: objectId(data.videoId) },
-    { $set: { votes: data.votes } },
-    function (err, result) {
+function connect(callback) {
+  var MongoClient = require("mongodb").MongoClient;
+
+  var dbURI = process.env.MONGODB_URI || require("../db/mongoDetails.js");
+
+  var client = new MongoClient(dbURI);
+
+  client.connect(
+    function (err) {
       if (err !== null) throw err;
-      response.send(result);
-      //client.close();
+
+      var db = client.db("posts");
+      var dogposts = db.collection("videos");
+
+      callback(dogposts, client);
+    },
+    { useNewUrlParser: true }
+  );
+}
+
+function updateVotes(c, callback) {
+  console.log(c);
+
+  connect(function (dogposts, client) {
+    dogposts.updateOne(
+      { _id: objectId(c.id) },
+      { $set: { votes: c.votes } },
+      function (err, result) {
+        if (err !== null) throw err;
+        callback(result);
+
+        client.close();
+
+        function connect(callback) {
+          var MongoClient = require("mongodb").MongoClient;
+
+          var dbURI =
+            process.env.MONGODB_URI ||
+            require("../config/keys.js") ||
+            "mongodb://localhost:27017";
+
+          var client = new MongoClient(dbURI);
+
+          client.connect(
+            function (err) {
+              if (err !== null) throw err;
+
+              var db = client.db("dbDogs");
+              var dogposts = db.collection("dogposts");
+
+              callback(dogposts, client);
+            },
+            { useNewUrlParser: true }
+          );
+        }
+      }
+    );
+  });
+}
+
+router.put("/updateVotes", (req, res) => {
+  console.log("updateVotes in back end");
+
+  updateVotes(
+    {
+      id: req.body.id,
+      votes: req.body.votes,
+    },
+    function (result) {
+      res.send(result);
     }
   );
 });
+
+// router.put("/updateVotes", (request, response) => {
+//   console.log("updateVotes in back end");
+//   const tableName = "videos";
+//   const data = request.body.data;
+//   db.collection(tableName).updateOne(
+//     { _id: objectId(data.id) },
+//     { $set: { votes: data.votes } },
+//     function (err, result) {
+//       if (err !== null) throw err;
+//       response.send(result);
+//       //client.close();
+//     }
+//   );
+// });
 
 router.put("/updateDislikes", (request, response) => {
   console.log("updateVotes in back end");

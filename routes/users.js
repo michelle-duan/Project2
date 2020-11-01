@@ -3,10 +3,8 @@ const router = express.Router();
 const mongoClient = require("mongodb").MongoClient;
 const assert = require("assert");
 const bodyParser = require("body-parser");
-
-let url =
-  process.env.MONGODB_URI ||
-  "mongodb://brad123:brad123@tmcluster-shard-00-00.49zsn.mongodb.net:27017,tmcluster-shard-00-01.49zsn.mongodb.net:27017,tmcluster-shard-00-02.49zsn.mongodb.net:27017/test?ssl=true&replicaSet=atlas-a1od78-shard-0&authSource=admin&retryWrites=true&w=majority";
+require("dotenv").config();
+let url = process.env.MONGODB_URI || require("../db/mongoDetails.js");
 let db;
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
