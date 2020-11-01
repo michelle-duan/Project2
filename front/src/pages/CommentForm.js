@@ -63,7 +63,7 @@ class CommentForm extends React.Component {
 }
 
 CommentForm.propTypes = {
-  videoeId: PropTypes.string.isRequired,
+  videoId: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
   enableComment: PropTypes.bool.isRequired,
   comment: PropTypes.string.isRequired,

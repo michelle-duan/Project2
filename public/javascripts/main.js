@@ -2,7 +2,7 @@ const ulPosts = document.querySelector("#posts");
 const divErr = document.querySelector("#err");
 
 function populatePosts(posts) {
-  for (let p of posts) {
+  for (const p of posts) {
     const liP = document.createElement("li");
     liP.innerHTML = `By: ${p.author} <br/> ${p.text}`;
     ulPosts.appendChild(liP);

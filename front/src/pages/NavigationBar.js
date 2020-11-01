@@ -1,11 +1,11 @@
 import React from "react";
-import { Navbar, Nav, ButtonToolbar, Button } from "react-bootstrap";
+import { ButtonToolbar, Button } from "react-bootstrap";
 import Cookies from "universal-cookie";
 import "./style/navigation-bar.css";
 
 import { NavLink } from "react-router-dom";
 import { Row, Col, Menu } from "antd";
-import { HomeOutlined, ReadOutlined } from "@ant-design/icons";
+import HomeOutlined from "@ant-design/icons";
 //import "./style/antStyle.less";
 
 class NavigationBar extends React.Component {

@@ -2,15 +2,12 @@ const express = require("express");
 const router = express.Router();
 const mongoClient = require("mongodb").MongoClient;
 const assert = require("assert");
-const bodyParser = require("body-parser");
 const objectId = require("mongodb").ObjectID;
 require("dotenv").config();
 // Connection URL
-let url = process.env.MONGODB_URI || require("../db/mongoDetails.js");
+const url = process.env.MONGODB_URI || require("../db/mongoDetails.js");
 
 let db;
-
-const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 router.get("/list", function (request, response) {
   const tableName = "videos";
@@ -33,7 +30,6 @@ router.get("/getContent", function (request, response) {
     if (error !== undefined && error !== null) {
       // occurs error
       response.status(500);
-      client.close();
       response.send(
         "Since server encounters error, registration failed. details: " +
           error.message
@@ -175,27 +171,6 @@ function updateVotes(c, callback) {
         callback(result);
 
         client.close();
-
-        function connect(callback) {
-          var MongoClient = require("mongodb").MongoClient;
-
-          var dbURI =
-            process.env.MONGODB_URI || require("../db/mongoDetails.js");
-
-          var client = new MongoClient(dbURI);
-
-          client.connect(
-            function (err) {
-              if (err !== null) throw err;
-
-              var db = client.db("dbDogs");
-              var dogposts = db.collection("dogposts");
-
-              callback(dogposts, client);
-            },
-            { useNewUrlParser: true }
-          );
-        }
       }
     );
   });

@@ -4,7 +4,7 @@ const mongoClient = require("mongodb").MongoClient;
 const assert = require("assert");
 const bodyParser = require("body-parser");
 require("dotenv").config();
-let url = process.env.MONGODB_URI || require("../db/mongoDetails.js");
+const url = process.env.MONGODB_URI || require("../db/mongoDetails.js");
 let db;
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
