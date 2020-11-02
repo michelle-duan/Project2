@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import { Row, Col } from "react-bootstrap";
 import PropTypes from "prop-types";
+import "./style/comments.css";
 
 class Comments extends React.Component {
   constructor(props) {

@@ -5,6 +5,7 @@ import { Container, Row, Col, Form } from "react-bootstrap";
 import Cookies from "universal-cookie";
 import Button from "react-bootstrap/Button";
 import NavigationBar from "./NavigationBar";
+import "./style/login.css";
 
 class Login extends React.Component {
   constructor(props) {

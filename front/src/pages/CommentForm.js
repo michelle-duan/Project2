@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { Form, Col, Button, Row } from "react-bootstrap";
+import "./style/commentForm.css";
 
 class CommentForm extends React.Component {
   handleOnSubmit(event) {

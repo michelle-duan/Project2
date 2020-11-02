@@ -8,6 +8,7 @@ import Cookies from "universal-cookie";
 import NavigationBar from "./NavigationBar";
 import Jumbo from "./Jumbotron.js";
 import Button from "react-bootstrap/Button";
+import "./style/singlePages.css";
 
 class SinglePages extends React.Component {
   constructor(props) {

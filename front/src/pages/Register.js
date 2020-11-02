@@ -4,6 +4,7 @@ import Cookie from "universal-cookie";
 import { Redirect } from "react-router-dom";
 import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
 import NavigationBar from "./NavigationBar";
+import "./style/register.css";
 
 class Register extends React.Component {
   constructor(props) {
